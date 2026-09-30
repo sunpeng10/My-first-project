@@ -1,0 +1,30 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+
+# ---- 模型权重（大文件，通过下载链接获取，勿提交）----
+saved_models/basnet_bsi/basnet.pth
+
+# ---- 派生数据（采集的图片 / 显著性图等，非源码）----
+visual_saliency_analysis/data/images/
+visual_saliency_analysis/outputs/saliency_maps/
+visual_saliency_analysis/outputs/saliency_visual_check/
+visual_saliency_analysis/outputs/statistics/
+
+# ---- 前端 ----
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+*.local
+
+# ---- 后端运行时产物 ----
+backend/uploads/
+backend/outputs/
+
+# ---- 系统 / 编辑器 ----
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

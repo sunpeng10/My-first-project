@@ -1,0 +1,247 @@
+{
+  "generated_by": "scripts/audit_user_mapping.py",
+  "stage": "phase3_step2_username_uid_mapping",
+  "inputs": {
+    "weibo_csv": "D:/WeiboCrawler/data/weibo.csv",
+    "mapping_csv": "D:/WeiboCrawler/data/weibo_user_mapping.csv",
+    "mention_relations": "visual_saliency_analysis/graph/mention_relations_raw.csv"
+  },
+  "mapping_quality": {
+    "total_unique_author_uid_in_weibo_csv": 403,
+    "mapped_uid_count": 403,
+    "unmapped_uid_count": 0,
+    "unmapped_uid_details": [],
+    "mapping_success_rate": 1.0,
+    "empty_username_count": 0,
+    "empty_username_uids": [],
+    "uid_with_multiple_names": {},
+    "name_with_multiple_uids": {}
+  },
+  "post_coverage": {
+    "total_posts": 500,
+    "posts_with_author_username": 500,
+    "posts_without_author_username": 0
+  },
+  "mentioned_username_match": {
+    "mentioned_total": 53,
+    "matched_mentions": 6,
+    "unmatched_mentions": 47,
+    "match_rate": 0.1132,
+    "matched_details": [
+      {
+        "mentioned_username": "CristianoRonaldo",
+        "user_id": "5926318749"
+      },
+      {
+        "mentioned_username": "Lila-阿敏",
+        "user_id": "2937990707"
+      },
+      {
+        "mentioned_username": "coser小梦酱",
+        "user_id": "6126403279"
+      },
+      {
+        "mentioned_username": "中国新闻周刊",
+        "user_id": "1642512402"
+      },
+      {
+        "mentioned_username": "于适工作室",
+        "user_id": "7837302744"
+      },
+      {
+        "mentioned_username": "玉玊则不汏",
+        "user_id": "6788591973"
+      }
+    ],
+    "unmatched_details": [
+      {
+        "mentioned_username": "-沈小婷-",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "GDRAGON_OFFICIAL",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "INTO1-周柯宇",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "INTO1-尹浩宇",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "NeKoL_蔚蓝",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "THEO-朱正廷",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "TiffanyAndCo蒂芙尼",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "_TheMoon",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "_小昊同学_",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "丁禹兮",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "三金西瓜霜",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "可ke达鸭",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "喜庆少女",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "回忆专用小马甲",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "宋祖儿lareina",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "小梦coser",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "尚公主官微",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "张婧仪",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "微博明星",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "微博演出",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "微博音乐",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "我叫猫天天",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "我是娜扎",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "抚子小宝",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "摄影师NANA-C",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "无聊的局外人wen",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "时代少年团-贺峻霖",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "沈月",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "河豚抚子",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "王星越",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "王阳0313",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "王鹤棣_Dylan",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "白鹿my",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "盼儿光儿成为你心中的一根刺",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "罗云熙Leo",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "老是十八弟",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "谭松韵seven",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "赖雨濛",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "赵丽颖",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "赵露思的微博",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "逆命命MinG",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "重庆医科大学",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "阿敏写真馆",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "阿里巴巴公益",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "陈半厨",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "飘飘呐",
+        "reason": "not_in_collected_authors"
+      },
+      {
+        "mentioned_username": "香香美食",
+        "reason": "not_in_collected_authors"
+      }
+    ]
+  }
+}

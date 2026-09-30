@@ -36,7 +36,7 @@ def save_output(image_name,pred,d_dir):
 	predict_np = predict.cpu().data.numpy()
 
 	im = Image.fromarray(predict_np*255).convert('RGB')
-	img_name = image_name.split("/")[-1]
+	img_name = os.path.basename(image_name)
 	image = io.imread(image_name)
 	imo = im.resize((image.shape[1],image.shape[0]),resample=Image.BILINEAR)
 
@@ -54,11 +54,11 @@ def save_output(image_name,pred,d_dir):
 if __name__ == '__main__':
 	# --------- 1. get image path and name ---------
 	
-	image_dir = './test_data/test_images/'
-	prediction_dir = './test_data/test_results/'
+	image_dir = './visual_saliency_analysis/data/images/weibo/'
+	prediction_dir = './visual_saliency_analysis/outputs/saliency_maps/'
 	model_dir = './saved_models/basnet_bsi/basnet.pth'
 	
-	img_name_list = glob.glob(image_dir + '*.jpg')
+	img_name_list = glob.glob(image_dir + '*.jpg') + glob.glob(image_dir + '*.jpeg') + glob.glob(image_dir + '*.png')
 	
 	# --------- 2. dataloader ---------
 	#1. dataload

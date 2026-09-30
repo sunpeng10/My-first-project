@@ -1,0 +1,43 @@
+{
+  "node_count": 403,
+  "edge_count": 7,
+  "directed": true,
+  "self_loop_count": 4,
+  "isolated_node_count": 395,
+  "active_node_count": 8,
+  "average_degree": 0.034739,
+  "average_in_degree": 0.01737,
+  "average_out_degree": 0.01737,
+  "network_density": 4.32083e-05,
+  "weakly_connected_components": 400,
+  "largest_component_size": 4,
+  "largest_component_ratio": 0.009926,
+  "component_size_distribution": {
+    "1": 399,
+    "4": 1
+  },
+  "largest_component_members": [
+    "2002400427",
+    "5926318749",
+    "6420654776",
+    "6788591973"
+  ],
+  "self_loop_edges": [
+    [
+      "1642512402",
+      "1642512402"
+    ],
+    [
+      "2937990707",
+      "2937990707"
+    ],
+    [
+      "6126403279",
+      "6126403279"
+    ],
+    [
+      "7837302744",
+      "7837302744"
+    ]
+  ]
+}

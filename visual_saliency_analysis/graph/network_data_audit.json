@@ -1,0 +1,215 @@
+{
+  "generated_by": "scripts/build_network_data.py",
+  "stage": "phase3_step1_network_data_audit",
+  "inputs": {
+    "post_metadata": "visual_saliency_analysis/data/weibo_metadata.csv",
+    "weibo_url_source": "D:/WeiboCrawler/data/weibo.csv (read-only join by image_id)"
+  },
+  "posts": {
+    "total_posts": 500,
+    "unique_author_uid": 403,
+    "author_post_distribution": {
+      "1": 362,
+      "2": 22,
+      "3": 5,
+      "4": 5,
+      "5": 1,
+      "6": 3,
+      "7": 4,
+      "8": 1
+    },
+    "top_authors_by_post_count": [
+      {
+        "author_uid": "3217742437",
+        "post_count": 8
+      },
+      {
+        "author_uid": "7804300115",
+        "post_count": 7
+      },
+      {
+        "author_uid": "6420654776",
+        "post_count": 7
+      },
+      {
+        "author_uid": "5428423860",
+        "post_count": 7
+      },
+      {
+        "author_uid": "3217035437",
+        "post_count": 7
+      },
+      {
+        "author_uid": "7767144248",
+        "post_count": 6
+      },
+      {
+        "author_uid": "5250260756",
+        "post_count": 6
+      },
+      {
+        "author_uid": "2002400427",
+        "post_count": 6
+      },
+      {
+        "author_uid": "1898883457",
+        "post_count": 5
+      },
+      {
+        "author_uid": "1816029971",
+        "post_count": 4
+      },
+      {
+        "author_uid": "2001717811",
+        "post_count": 4
+      },
+      {
+        "author_uid": "7866135934",
+        "post_count": 4
+      },
+      {
+        "author_uid": "2201915244",
+        "post_count": 4
+      },
+      {
+        "author_uid": "7850599876",
+        "post_count": 4
+      },
+      {
+        "author_uid": "7200019989",
+        "post_count": 3
+      },
+      {
+        "author_uid": "2090591961",
+        "post_count": 3
+      },
+      {
+        "author_uid": "6788591973",
+        "post_count": 3
+      },
+      {
+        "author_uid": "6153121801",
+        "post_count": 3
+      },
+      {
+        "author_uid": "7788408192",
+        "post_count": 3
+      },
+      {
+        "author_uid": "2352402774",
+        "post_count": 2
+      }
+    ]
+  },
+  "uid_extraction": {
+    "success": 500,
+    "failed": 0,
+    "url_anomalies": 0,
+    "failed_details": [],
+    "url_anomaly_details": []
+  },
+  "mentions": {
+    "posts_with_mention": 44,
+    "posts_without_mention": 456,
+    "total_mention_occurrences": 61,
+    "unique_mentioned_username": 53,
+    "per_post_mention_distribution": {
+      "1": 37,
+      "2": 3,
+      "3": 2,
+      "4": 1,
+      "8": 1
+    },
+    "top20_mentioned": [
+      {
+        "mentioned_username": "CristianoRonaldo",
+        "count": 8
+      },
+      {
+        "mentioned_username": "张婧仪",
+        "count": 2
+      },
+      {
+        "mentioned_username": "罗云熙Leo",
+        "count": 1
+      },
+      {
+        "mentioned_username": "王星越",
+        "count": 1
+      },
+      {
+        "mentioned_username": "宋祖儿lareina",
+        "count": 1
+      },
+      {
+        "mentioned_username": "三金西瓜霜",
+        "count": 1
+      },
+      {
+        "mentioned_username": "香香美食",
+        "count": 1
+      },
+      {
+        "mentioned_username": "丁禹兮",
+        "count": 1
+      },
+      {
+        "mentioned_username": "中国新闻周刊",
+        "count": 1
+      },
+      {
+        "mentioned_username": "尚公主官微",
+        "count": 1
+      },
+      {
+        "mentioned_username": "GDRAGON_OFFICIAL",
+        "count": 1
+      },
+      {
+        "mentioned_username": "王阳0313",
+        "count": 1
+      },
+      {
+        "mentioned_username": "于适工作室",
+        "count": 1
+      },
+      {
+        "mentioned_username": "微博明星",
+        "count": 1
+      },
+      {
+        "mentioned_username": "微博音乐",
+        "count": 1
+      },
+      {
+        "mentioned_username": "微博演出",
+        "count": 1
+      },
+      {
+        "mentioned_username": "可ke达鸭",
+        "count": 1
+      },
+      {
+        "mentioned_username": "玉玊则不汏",
+        "count": 1
+      },
+      {
+        "mentioned_username": "我叫猫天天",
+        "count": 1
+      },
+      {
+        "mentioned_username": "阿里巴巴公益",
+        "count": 1
+      }
+    ]
+  },
+  "username_to_uid_mapping": {
+    "author_has_username_field": false,
+    "mentioned_username_to_uid_reliable": false,
+    "reason": "weibo_metadata.csv 无用户名(user_name/screen_name)字段，text 中的 @用户名 是自由文本，缺少官方 username->uid 索引，因此无法可靠地把被提及用户名映射到 UID；不得猜测或伪造。"
+  },
+  "outputs": {
+    "post_authors": "graph/post_authors.csv",
+    "mention_relations": "graph/mention_relations_raw.csv"
+  }
+}

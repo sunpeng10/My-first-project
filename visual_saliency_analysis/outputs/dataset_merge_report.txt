@@ -1,0 +1,28 @@
+微博视觉传播力数据集 — 合并报告
+生成时间: 2026-08-11 15:44:40
+=======================================================
+
+【数据验证】
+weibo_metadata.csv:          500 条
+visual_features.csv:         500 条
+image_id 是否一致:           是
+metadata 有但 features 缺失: 0
+features 有但 metadata 缺失: 0
+metadata 重复 image_id:       0
+features 重复 image_id:       0
+
+【合并结果】
+合并方式:                   INNER JOIN (取交集)
+合并后记录数:               500
+合并后字段数:               12
+字段列表:                   image_id, text, likes, comments, shares, saliency_area_ratio, mean_saliency, saliency_std, saliency_entropy, center_bias, component_count, largest_component_ratio
+输出文件:                   D:\BASNet\visual_saliency_analysis\results\weibo_visual_dataset.csv
+
+【数值字段统计】
+  saliency_area_ratio             mean=0.2469  std=0.1903  min=0.0000  max=0.8593
+  mean_saliency                   mean=0.2454  std=0.1878  min=0.0001  max=0.8471
+  saliency_std                    mean=0.3468  std=0.1437  min=0.0051  max=0.4946
+  saliency_entropy                mean=0.8580  std=0.1019  min=0.3077  max=0.9893
+  center_bias                     mean=0.2791  std=0.2038  min=0.0000  max=0.9961
+  component_count                 mean=2.1660  std=2.3481  min=0.0000  max=35.0000
+  largest_component_ratio         mean=0.2322  std=0.1874  min=0.0000  max=0.8593
