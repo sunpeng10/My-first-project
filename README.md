@@ -74,6 +74,7 @@
 ```
 ├── backend/                   # Flask API：封装三大能力（见 backend/README.md）
 ├── frontend/                  # Vue 3 + Vite 前端（见 frontend/README.md）
+├── sentiment/                 # 文本情感训练代码（见 sentiment/README.md）
 ├── gat/                       # GAT 模型定义 / 训练 / 推理（见 gat/README.md）
 ├── scripts/run_gat.py         # GAT 完整流程入口
 ├── results/                   # GAT 已生成结果（图结构 / 排名 / 注意力，后端直接读）
@@ -146,6 +147,7 @@ npm run dev                    # http://localhost:5173
 
 - [`backend/README.md`](backend/README.md) — API 列表、请求示例、错误码、数据来源
 - [`frontend/README.md`](frontend/README.md) — 页面功能、环境配置、技术栈
+- [`sentiment/README.md`](sentiment/README.md) — 文本情感训练代码（RoBERTa-wwm + Captum）
 - [`gat/README.md`](gat/README.md) — GAT 训练 / 推理、pseudo-label 局限
 - [`visual_saliency_analysis/README.md`](visual_saliency_analysis/README.md) — 视觉显著性分析流水线
 - [`results/gat_report.md`](results/gat_report.md) — GAT 实验报告
