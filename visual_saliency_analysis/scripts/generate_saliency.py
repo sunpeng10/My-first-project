@@ -11,7 +11,7 @@ generate_saliency.py — 批量生成社交媒体图片的视觉显著性图 (Sa
     python visual_saliency_analysis/scripts/generate_saliency.py
 
 依赖：
-    - BASNet 模型权重: saved_models/basnet_bsi/basnet.pth
+    - BASNet 模型权重: basnet/saved_models/basnet_bsi/basnet.pth
     - 输入图片目录: visual_saliency_analysis/data/images/
 """
 
@@ -28,15 +28,15 @@ import numpy as np
 from skimage import io
 
 # ---------------------------------------------------------------------------
-# 将项目根目录加入 sys.path，以便导入 model 和 data_loader 模块
+# 将项目根目录加入 sys.path，以便导入 basnet.model 和 basnet.data_loader 模块
 # ---------------------------------------------------------------------------
 _PROJECT_ROOT = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 sys.path.insert(0, _PROJECT_ROOT)
 
-from data_loader import RescaleT, ToTensorLab, SalObjDataset   # noqa: E402
-from model import BASNet                                        # noqa: E402
+from basnet.data_loader import RescaleT, ToTensorLab, SalObjDataset   # noqa: E402
+from basnet.model import BASNet                                        # noqa: E402
 
 
 # ===========================================================================
@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     image_dir = os.path.join(BASE_DIR, 'data', 'images')              # 输入图片目录
     output_dir = os.path.join(BASE_DIR, 'outputs', 'saliency_maps')   # 显著性图输出目录
-    model_path = os.path.join(_PROJECT_ROOT, 'saved_models', 'basnet_bsi', 'basnet.pth')
+    model_path = os.path.join(_PROJECT_ROOT, 'basnet', 'saved_models', 'basnet_bsi', 'basnet.pth')
 
     # 确保输出目录存在
     os.makedirs(output_dir, exist_ok=True)
@@ -146,7 +146,7 @@ if __name__ == '__main__':
     print("[INFO] 加载 BASNet 模型...")
     if not os.path.exists(model_path):
         print(f"[ERROR] 模型权重未找到: {model_path}")
-        print(f"        请先下载 basnet.pth 到 saved_models/basnet_bsi/ 目录。")
+        print(f"        请先下载 basnet.pth 到 basnet/saved_models/basnet_bsi/ 目录。")
         sys.exit(1)
 
     net = BASNet(3, 1)

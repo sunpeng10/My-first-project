@@ -212,7 +212,7 @@ CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
 | 数据 | 路径 | 说明 |
 |------|------|------|
 | 文本模型 | `D:\vscode python files\sentiment_baseline\models` | RoBERTa 权重（只读） |
-| 图像模型 | `saved_models/basnet_bsi/basnet.pth` | BASNet 权重（只读） |
+| 图像模型 | `basnet/saved_models/basnet_bsi/basnet.pth` | BASNet 权重（只读） |
 | 图结构 | `results/gat_graph.json` | 2848 nodes / 2999 edges |
 | 核心节点 | `results/gat_top_nodes.csv` | 排名表 |
 | 节点详情 | `results/gat_node_scores.csv` | UID 索引 |

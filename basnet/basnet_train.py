@@ -1,3 +1,5 @@
+import os
+import sys
 import torch
 import torchvision
 from torch.autograd import Variable
@@ -12,18 +14,23 @@ import torchvision.transforms as standard_transforms
 import numpy as np
 import glob
 
-from data_loader import Rescale
-from data_loader import RescaleT
-from data_loader import RandomCrop
-from data_loader import CenterCrop
-from data_loader import ToTensor
-from data_loader import ToTensorLab
-from data_loader import SalObjDataset
+# 项目根目录（basnet/ 的上一级），使 from basnet.* 可导入
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
 
-from model import BASNet
+from basnet.data_loader import Rescale
+from basnet.data_loader import RescaleT
+from basnet.data_loader import RandomCrop
+from basnet.data_loader import CenterCrop
+from basnet.data_loader import ToTensor
+from basnet.data_loader import ToTensorLab
+from basnet.data_loader import SalObjDataset
 
-import pytorch_ssim
-import pytorch_iou
+from basnet.model import BASNet
+
+from basnet import pytorch_ssim
+from basnet import pytorch_iou
 
 # ------- 1. define loss function --------
 
@@ -71,7 +78,7 @@ tra_label_dir = 'DUTS/DUTS-TR/DUTS-TR/gt_aug/'
 image_ext = '.jpg'
 label_ext = '.png'
 
-model_dir = "./saved_models/basnet_bsi/"
+model_dir = "./basnet/saved_models/basnet_bsi/"
 
 
 epoch_num = 100000

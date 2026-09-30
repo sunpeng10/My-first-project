@@ -79,11 +79,14 @@
 ├── scripts/run_gat.py         # GAT 完整流程入口
 ├── results/                   # GAT 已生成结果（图结构 / 排名 / 注意力，后端直接读）
 ├── models/gat_best.pt         # 已训练 GAT 权重（46 KB）
-├── model/                     # BASNet 官方模型代码（上游，未修改）
-├── visual_saliency_analysis/  # 视觉显著性分析流水线（见其 README）
-├── basnet_test.py             # BASNet 推理脚本（已指向微博数据）
-├── data_loader.py             # 数据预处理
-└── saved_models/basnet_bsi/   # basnet.pth 存放处（未入库，需下载）
+├── basnet/                    # BASNet 上游（模型 / 推理 / 训练 / 权重）
+│   ├── model/                 #   BASNet 模型代码（上游，未修改）
+│   ├── data_loader.py         #   数据预处理
+│   ├── basnet_test.py         #   推理脚本（已指向微博数据）
+│   ├── basnet_train.py        #   训练脚本
+│   ├── pytorch_iou/ pytorch_ssim/    # 损失函数
+│   └── saved_models/basnet_bsi/     # basnet.pth（未入库，需下载）
+└── visual_saliency_analysis/  # 视觉显著性分析流水线（见其 README）
 ```
 
 ## 6. 技术栈
@@ -113,7 +116,7 @@ npm run dev                    # http://localhost:5173
 
 | 依赖 | 大小 | 位置 | 状态 |
 |------|------|------|------|
-| `basnet.pth`（BASNet 权重） | 348 MB | `saved_models/basnet_bsi/` | 未入库，[GoogleDrive](https://drive.google.com/open?id=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu) 下载 |
+| `basnet.pth`（BASNet 权重） | 348 MB | `basnet/saved_models/basnet_bsi/` | 未入库，[GoogleDrive](https://drive.google.com/open?id=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu) 下载 |
 | RoBERTa 情感模型 | 391 MB | `SENTIMENT_ROOT` 指定 | **待上传** |
 | 微博原图 | 267 MB | `D:\WeiboCrawler\images\` | 采集项目产出 |
 | `comment_edges.csv` | 1.2 MB | `D:\WeiboCrawler\data\` | 采集项目产出 |

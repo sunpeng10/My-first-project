@@ -24,7 +24,7 @@ TEXT_MODEL_DIR = os.path.join(SENTIMENT_ROOT, "models")
 # 图像模型（BASNet）—— 已训练权重
 # ---------------------------------------------------------------------------
 BASNET_MODEL_PATH = os.path.join(
-    PROJECT_ROOT, "saved_models", "basnet_bsi", "basnet.pth"
+    PROJECT_ROOT, "basnet", "saved_models", "basnet_bsi", "basnet.pth"
 )
 
 # ---------------------------------------------------------------------------

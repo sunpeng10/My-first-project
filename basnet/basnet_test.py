@@ -1,4 +1,5 @@
 import os
+import sys
 from skimage import io, transform
 import torch
 import torchvision
@@ -13,13 +14,18 @@ import numpy as np
 from PIL import Image
 import glob
 
-from data_loader import RescaleT
-from data_loader import CenterCrop
-from data_loader import ToTensor
-from data_loader import ToTensorLab
-from data_loader import SalObjDataset
+# 项目根目录（basnet/ 的上一级），使 from basnet.* 可导入
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
 
-from model import BASNet
+from basnet.data_loader import RescaleT
+from basnet.data_loader import CenterCrop
+from basnet.data_loader import ToTensor
+from basnet.data_loader import ToTensorLab
+from basnet.data_loader import SalObjDataset
+
+from basnet.model import BASNet
 
 def normPRED(d):
 	ma = torch.max(d)
@@ -56,7 +62,7 @@ if __name__ == '__main__':
 	
 	image_dir = './visual_saliency_analysis/data/images/weibo/'
 	prediction_dir = './visual_saliency_analysis/outputs/saliency_maps/'
-	model_dir = './saved_models/basnet_bsi/basnet.pth'
+	model_dir = './basnet/saved_models/basnet_bsi/basnet.pth'
 	
 	img_name_list = glob.glob(image_dir + '*.jpg') + glob.glob(image_dir + '*.jpeg') + glob.glob(image_dir + '*.png')
 	

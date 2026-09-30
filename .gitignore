@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 
 # ---- 模型权重（大文件，通过下载链接获取，勿提交）----
-saved_models/basnet_bsi/basnet.pth
+basnet/saved_models/basnet_bsi/basnet.pth
 
 # ---- 派生数据（采集的图片 / 显著性图等，非源码）----
 visual_saliency_analysis/data/images/

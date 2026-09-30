@@ -39,4 +39,4 @@ visual_saliency_analysis/
 
 ## 基线模型
 
-- BASNet (CVPR 2019)，权重 `saved_models/basnet_bsi/basnet.pth`（未入库，获取方式见根 README）
+- BASNet (CVPR 2019)，权重 `basnet/saved_models/basnet_bsi/basnet.pth`（未入库，获取方式见根 README）

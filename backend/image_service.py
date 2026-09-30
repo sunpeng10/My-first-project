@@ -54,8 +54,8 @@ class ImageService:
                 # 复用原项目 BASNet 模型与数据预处理
                 if config.PROJECT_ROOT not in sys.path:
                     sys.path.insert(0, config.PROJECT_ROOT)
-                from data_loader import RescaleT, ToTensorLab  # noqa: E402
-                from model import BASNet  # noqa: E402
+                from basnet.data_loader import RescaleT, ToTensorLab  # noqa: E402
+                from basnet.model import BASNet  # noqa: E402
 
                 # 复用原项目 7 项显著性特征函数
                 scripts_dir = config.PROJECT_ROOT + "/visual_saliency_analysis/scripts"
