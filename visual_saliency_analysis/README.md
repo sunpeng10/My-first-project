@@ -1,68 +1,42 @@
-# 社交媒体图片视觉显著性与传播力相关性分析
+# 视觉显著性与传播力相关性分析
 
-Visual Saliency & Virality Correlation Analysis for Social Media Images
-
-## 概述
-
-本项目基于 BASNet (Boundary-Aware Salient Object Detection) 作为基线模型，研究社交媒体图片的视觉显著性（Saliency Map）与其传播力指标（点赞、转发、评论等）之间的相关性。
+基于 BASNet 对微博图片做显著性检测，提取视觉特征，与互动指标（点赞 / 评论 / 转发）合并，分析视觉显著性与社交媒体传播力的相关性。数据与代码均在 `visual_saliency_analysis/` 下。
 
 ## 目录结构
 
 ```
 visual_saliency_analysis/
 ├── data/
-│   ├── images/              # 原始社交媒体图片
-│   └── metadata.csv         # 图片元数据（文件名、平台、互动指标等）
+│   ├── images/weibo/          # 500 张微博图片 wb_0001.jpg ~ wb_0500.jpg（未入库）
+│   ├── weibo_metadata.csv     # 微博互动指标（image_id, text, likes, comments, shares）
+│   └── weibo_collection.csv   # 采集模板（9 字段空模板）
 ├── outputs/
-│   └── saliency_maps/       # BASNet 生成的显著性图
+│   ├── saliency_maps/         # 500 张显著性图（未入库）
+│   ├── saliency_quality_report.csv  # 异常检测报告（34 条）
+│   ├── saliency_visual_check/ # 随机对比图
+│   └── dataset_merge_report.txt
 ├── features/
-│   └── visual_features.csv  # 从显著性图提取的数值特征
-├── scripts/
-│   ├── generate_saliency.py # 调用 BASNet 批量生成显著性图
-│   ├── extract_features.py  # 从显著性图提取数值特征
-│   └── correlation_analysis.py # 显著性与传播力相关性统计
-├── results/                 # 统计分析结果（图表、报告）
-└── README.md
+│   └── visual_features.csv    # 500 行 × 8 列视觉特征
+├── graph/                     # 网络构建数据（post_authors.csv 等，后端节点详情读取）
+├── results/
+│   ├── weibo_visual_dataset.csv   # 合并后完整数据集（500 行 × 12 列）
+│   ├── analysis_dataset.csv
+│   └── correlation_analysis.csv
+└── scripts/                   # 各处理脚本
 ```
 
-## 特征维度
+## 视觉特征（8 项）
 
-从 Saliency Map 中提取的视觉特征包括：
-- 显著区域面积占比
-- 显著区域数量
-- 显著区域空间分布（中心偏移）
-- 显著区域对比度
-- 显著区域熵
+显著区域面积占比、平均显著强度、强度离散度、显著性熵、中心偏移、连通域数量、最大连通域占比等。
 
-## 传播力指标
+## 处理流水线
 
-metadata.csv 中可包含的指标：
-- likes（点赞数）
-- shares（转发数）
-- comments（评论数）
-- impressions（展示量）
-- engagement_rate（互动率）
+1. `scripts/download_weibo_images.py` 下载微博图片
+2. `scripts/generate_saliency.py` 批量生成显著性图（调用 BASNet）
+3. `scripts/extract_visual_features.py` 提取视觉特征
+4. `scripts/merge_visual_propagation_dataset.py` 合并视觉特征与互动指标
+5. `scripts/correlation_analysis.py` 相关性分析
 
 ## 基线模型
 
-- BASNet (CVPR 2019) — Boundary-Aware Salient Object Detection
-- 模型权重：`saved_models/basnet_bsi/basnet.pth`
-
-## 分析方法
-
-1. 皮尔逊相关系数（Pearson's r）
-2. 斯皮尔曼秩相关（Spearman's ρ）
-3. 多元线性回归
-4. 分组对比（高传播 vs 低传播）
-
-## 使用步骤
-
-1. 将社交媒体图片放入 `data/images/`
-2. 编辑 `data/metadata.csv` 填入互动指标
-3. 运行 `scripts/generate_saliency.py` 生成显著性图
-4. 运行 `scripts/extract_features.py` 提取数值特征
-5. 运行 `scripts/correlation_analysis.py` 进行相关性分析
-
-## 作者
-
-BASNet Baseline: Xuebin Qin et al. (2019)
+- BASNet (CVPR 2019)，权重 `saved_models/basnet_bsi/basnet.pth`（未入库，获取方式见根 README）
