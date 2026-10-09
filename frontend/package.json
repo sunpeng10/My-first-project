@@ -6,6 +6,8 @@
   "description": "多模态社交媒体舆情分析与传播网络可视化系统 — Vue 3 前端",
   "scripts": {
     "dev": "vite",
+    "dev:research": "vite --open /research-dashboard.html",
+    "test": "node --test",
     "build": "vite build",
     "preview": "vite preview"
   },

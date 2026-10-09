@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="社交媒体热点舆情分析系统的前端 Mock Dashboard"
+    />
+    <title>社交媒体热点舆情分析系统 · Mock Dashboard</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <div>
+          <p class="eyebrow">RESEARCH DEMONSTRATION</p>
+          <h1>社交媒体热点舆情分析系统</h1>
+          <p class="subtitle">基于 Attention 与 Saliency 的多模态舆情分析</p>
+        </div>
+        <div class="mock-badge" aria-label="当前为 Mock 演示模式">
+          <span class="mock-badge__dot" aria-hidden="true"></span>
+          <span>MOCK MODE · 未调用模型或 API</span>
+        </div>
+      </header>
+
+      <main class="dashboard-layout">
+        <section class="content-column" aria-label="内容分析">
+          <div class="section-heading">
+            <span class="section-kicker">CONTENT ANALYSIS</span>
+            <h2>内容分析</h2>
+          </div>
+
+          <article class="panel text-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-eyebrow">TEXT + INTEGRATED GRADIENTS</p>
+                <h3>文本情感分析</h3>
+              </div>
+              <span class="status-pill" id="text-status">待分析</span>
+            </div>
+
+            <label class="field-label" for="text-input">微博或社交媒体文本</label>
+            <textarea id="text-input" rows="4">这个景区风景确实不错，就是人实在太多了。</textarea>
+            <div class="control-row">
+              <p class="field-hint">此阶段仅展示统一 mock 数据，不会调用 RoBERTa 或 Captum。</p>
+              <button class="primary-button" id="text-analyze" type="button">开始分析</button>
+            </div>
+
+            <section class="result-block" id="sentiment-result" aria-live="polite">
+              <div class="sentiment-summary">
+                <div>
+                  <p class="metric-label">情感分类</p>
+                  <p class="sentiment-label" id="sentiment-label">—</p>
+                </div>
+                <div>
+                  <p class="metric-label">Confidence</p>
+                  <p class="confidence-value" id="confidence-value">—</p>
+                </div>
+              </div>
+              <div class="ig-header">
+                <div>
+                  <p class="metric-label">IG 单词高亮</p>
+                  <p class="ig-help">悬浮查看 token、归因分数与原始分数。</p>
+                </div>
+                <div class="ig-legend" aria-label="IG 贡献图例">
+                  <span><i class="legend-swatch legend-swatch--positive"></i>正贡献</span>
+                  <span><i class="legend-swatch legend-swatch--negative"></i>负贡献</span>
+                </div>
+              </div>
+              <div class="ig-highlights" id="ig-highlights"></div>
+            </section>
+          </article>
+
+          <article class="panel image-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-eyebrow">VISUAL SALIENCY</p>
+                <h3>图片视觉显著性分析</h3>
+              </div>
+              <span class="status-pill" id="image-status">待分析</span>
+            </div>
+
+            <div class="image-controls">
+              <label class="file-input" for="image-upload">
+                <span>上传 jpg / jpeg / png</span>
+                <input id="image-upload" type="file" accept="image/jpeg,image/png" />
+              </label>
+              <button class="primary-button" id="image-analyze" type="button">分析图片</button>
+            </div>
+            <p class="field-hint" id="image-hint">未上传时显示明确标记的 Demo 图像与显著性结果。</p>
+
+            <div class="image-comparison">
+              <figure class="image-frame">
+                <figcaption>原图 <span class="demo-tag">DEMO</span></figcaption>
+                <img id="original-image" alt="Mock 原始社交媒体配图" />
+              </figure>
+              <figure class="image-frame">
+                <figcaption>显著性图 <span class="demo-tag">DEMO</span></figcaption>
+                <img id="saliency-image" alt="Mock 图片显著性图" />
+              </figure>
+            </div>
+
+            <div class="metric-grid metric-grid--image" aria-label="显著性指标">
+              <div class="metric-card">
+                <span>Saliency Area</span>
+                <strong id="saliency-area">—</strong>
+              </div>
+              <div class="metric-card">
+                <span>Mean</span>
+                <strong id="saliency-mean">—</strong>
+              </div>
+              <div class="metric-card">
+                <span>Max</span>
+                <strong id="saliency-max">—</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="network-column" aria-label="互动网络分析">
+          <div class="section-heading section-heading--network">
+            <span class="section-kicker">LOCAL INTERACTION NETWORK</span>
+            <h2>互动网络分析</h2>
+            <p>基于评论／回复关系的局部用户互动网络；不代表完整传播链。</p>
+          </div>
+
+          <article class="panel network-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-eyebrow">ECHARTS GRAPH · MOCK DATA</p>
+                <h3>舆情互动网络</h3>
+              </div>
+              <span class="status-pill status-pill--complete">分析完成</span>
+            </div>
+
+            <div class="metric-grid metric-grid--network" aria-label="网络统计">
+              <div class="metric-card">
+                <span>Nodes</span>
+                <strong id="network-node-count">—</strong>
+              </div>
+              <div class="metric-card">
+                <span>Edges</span>
+                <strong id="network-edge-count">—</strong>
+              </div>
+              <div class="metric-card">
+                <span>Core Nodes</span>
+                <strong id="network-core-count">—</strong>
+              </div>
+            </div>
+
+            <div class="network-instructions">
+              <span>节点大小映射 GAT Core Score</span>
+              <span>可拖动 · 缩放 · Hover · 点击查看详情</span>
+            </div>
+            <div class="network-selector-control">
+              <label class="field-label" for="network-node-selector">选择网络节点（键盘可操作）</label>
+              <select id="network-node-selector" aria-describedby="network-chart-description"></select>
+            </div>
+            <figure class="network-figure">
+              <figcaption class="network-chart-caption" id="network-chart-description">
+                这是 10 个用户和 12 条评论／回复关系构成的局部 Mock 网络。可用上方选择框查看所有节点详情；图中节点可拖动、缩放或悬浮查看数据。
+              </figcaption>
+              <div id="network-chart" aria-describedby="network-chart-description"></div>
+            </figure>
+          </article>
+
+          <div class="network-lower-grid">
+            <article class="panel core-list-panel">
+              <div class="panel-heading panel-heading--compact">
+                <div>
+                  <p class="panel-eyebrow">RANKING</p>
+                  <h3>核心互动节点</h3>
+                </div>
+              </div>
+              <div class="core-node-list" id="core-node-list"></div>
+            </article>
+
+            <article class="panel detail-panel" id="core-node-detail" aria-live="polite">
+              <div class="panel-heading panel-heading--compact">
+                <div>
+                  <p class="panel-eyebrow">NODE DETAIL</p>
+                  <h3>核心节点详情</h3>
+                </div>
+                <span class="detail-state" id="detail-state">已选中</span>
+              </div>
+              <dl class="detail-list">
+                <div><dt>用户</dt><dd id="detail-name">—</dd></div>
+                <div><dt>用户 ID</dt><dd id="detail-id">—</dd></div>
+                <div><dt>GAT Score</dt><dd id="detail-score">—</dd></div>
+                <div><dt>Degree</dt><dd id="detail-degree">—</dd></div>
+                <div><dt>PageRank</dt><dd id="detail-pagerank">—</dd></div>
+                <div><dt>K-core</dt><dd id="detail-kcore">—</dd></div>
+                <div><dt>评论 / 回复</dt><dd id="detail-interactions">—</dd></div>
+              </dl>
+              <p class="detail-note">GAT Core Score 仅用于该局部互动网络中的实验性节点表征，不等同于真实社会影响力。</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <span>当前全部结果均来自统一 mock 数据层。</span>
+        <span>后续将由 API 适配层逐项替换为真实模型输出。</span>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/mock-dashboard/main.js"></script>
+  </body>
+</html>
