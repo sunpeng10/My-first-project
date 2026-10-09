@@ -59,7 +59,7 @@ VITE_API_BASE_URL=http://127.0.0.1:5000
 | 区域 | 说明 | 对应 API |
 | --- | --- | --- |
 | 顶部状态 | 后端健康检查（系统在线 / 部分服务不可用） | `GET /api/health` |
-| 文本情感分析 | RoBERTa + Captum（IG / Saliency），逐字显著性高亮 | `POST /api/text` |
+| 文本情感分析 | RoBERTa + Captum（IG / Saliency），字/词显著性高亮（词级 jieba 分词聚合，可切换） | `POST /api/text` |
 | 图像显著性分析 | BASNet 显著性图 + 7 项视觉指标 | `POST /api/image`、`GET /api/image/saliency/<file>` |
 | 传播网络 | vis-network 力导向图，节点大小/颜色按 GAT score | `GET /api/graph` |
 | 核心节点 Top 10/20 | 排名表 + ECharts 统计图 | `GET /api/top-nodes` |

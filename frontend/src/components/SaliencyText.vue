@@ -13,8 +13,24 @@
       <div class="result__method mono">{{ methodText }}</div>
     </div>
 
-    <!-- 显著性逐字高亮 -->
-    <div class="section-title">情感显著性</div>
+    <!-- 显著性高亮（字级 / 词级可切换） -->
+    <div class="section-title">
+      <span>情感显著性</span>
+      <div class="granularity">
+        <button
+          class="granularity__btn"
+          :class="{ 'granularity__btn--on': granularity === 'char' }"
+          @click="granularity = 'char'"
+        >字</button>
+        <button
+          class="granularity__btn"
+          :class="{ 'granularity__btn--on': granularity === 'word' }"
+          :disabled="!hasWordLevel"
+          :title="hasWordLevel ? '' : '后端未安装 jieba，无词级数据'"
+          @click="granularity = 'word'"
+        >词</button>
+      </div>
+    </div>
     <div class="text-box">
       <span
         v-for="(seg, i) in segments"
@@ -44,11 +60,18 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   result: { type: Object, required: true },
 })
+
+// 显著性展示粒度：词级（jieba）优先，缺数据时退回字级
+const granularity = ref('word')
+
+const hasWordLevel = computed(
+  () => Array.isArray(props.result.words) && props.result.words.length > 0
+)
 
 const LABELS = {
   negative: '负面',
@@ -68,13 +91,19 @@ const methodText = computed(() =>
 
 /**
  * 依据后端返回的 char_range 将原文切分为片段。
- * 不重新计算 token 边界，不引入分词库。
+ * 字级（tokens）与词级（words，后端 jieba 分词聚合）共用同一 char_range 结构，
+ * 前端不重新计算边界、不引入分词库。
  * char_range 为 [start, end)（tokenizer return_offsets_mapping）。
  */
 const segments = computed(() => {
   const text = props.result.text || ''
+  const tokens = Array.isArray(props.result.tokens)
+    ? props.result.tokens
+    : (Array.isArray(props.result.words) ? props.result.words : [])
   const words = Array.isArray(props.result.words) ? props.result.words : []
-  const sorted = [...words]
+  // 词级数据缺失时（后端未装 jieba）自动退回字级
+  const source = granularity.value === 'word' && words.length ? words : tokens
+  const sorted = [...source]
     .filter((w) => Array.isArray(w.char_range) && w.char_range.length === 2)
     .sort((a, b) => a.char_range[0] - b.char_range[0])
 
@@ -116,7 +145,9 @@ function hlStyle(score) {
 function titleText(seg) {
   const parts = [`score: ${seg.score.toFixed(4)}`]
   if (seg.scoreRaw != null) parts.push(`score_raw: ${seg.scoreRaw.toFixed(4)}`)
-  if (seg.word != null) parts.push(`token: ${seg.word}`)
+  if (seg.word != null) {
+    parts.push(`${granularity.value === 'word' ? '词' : '字'}: ${seg.word}`)
+  }
   return parts.join('\n')
 }
 </script>
@@ -176,6 +207,36 @@ function titleText(seg) {
   letter-spacing: 1px;
   text-transform: uppercase;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.granularity {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.granularity__btn {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0;
+}
+
+.granularity__btn--on {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.granularity__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .text-box {

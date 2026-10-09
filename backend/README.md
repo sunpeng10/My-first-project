@@ -122,19 +122,28 @@ curl "http://127.0.0.1:5000/api/attention?uid=6272876985&limit=50"
     "label_id": 0,
     "confidence": 0.9947,
     "method": "ig",
-    "words": [
+    "tokens": [
       {"word": "这", "score": 0.05, "score_raw": -0.0121,
        "token_index": 0, "token_text": "这", "char_range": [0, 1]},
       {"word": "差", "score": 1.0, "score_raw": -0.2638,
        "token_index": 5, "token_text": "差", "char_range": [5, 6]}
+    ],
+    "words": [
+      {"word": "这个", "score": 0.32, "score_raw": -0.083,
+       "char_range": [0, 2], "char_count": 2},
+      {"word": "太差", "score": 1.0, "score_raw": -0.2638,
+       "char_range": [4, 6], "char_count": 2}
     ]
   }
 }
 ```
 
 - `char_range` 为原始文本中的 `[起, 止)` 字符区间，前端据此高亮原文。
-- 中文 RoBERTa-wwm 的 token 粒度是**单字**，因此 `words` 为 token 级（不伪造词边界）。
-- `score` 为按最大绝对值归一化的显著性大小，`score_raw` 为带符号的原始归因值。
+- `tokens` 为**字级**显著性（中文 RoBERTa-wwm 的 token 粒度是单字）。
+- `words` 为**词级**显著性：用 jieba 在原文上分词，把词区间内的字级归因聚合得到；
+  后端未安装 jieba 时该字段为空数组。
+- `score` 为归因向量的 **L1 幅度**（`|attr|` 求和）按最大值归一化的显著性大小，
+  反映「重要程度」；`score_raw` 为带符号的归因和（embedding 维求和），仅反映方向。
 
 ### `POST /api/image`
 
@@ -229,4 +238,5 @@ CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
 - 网络基于每条微博**最多 20 条一级评论**构建，**不是完整微博传播网络**。
 - GAT 结果应表述为「**GAT-based core propagation node identification**」，
   不声称「GAT 成功预测了真实 KOL」。
-- 文本显著性为 token（单字）级，未做中文分词（避免引入未经验证的词边界）。
+- 文本显著性提供字级（`tokens`）与词级（`words`，jieba 分词聚合）两个视图；
+  词级为字级归因按 jieba 词边界求和，非模型原生词粒度。

@@ -5,7 +5,8 @@
   `get_embeddings_from_ids` 桥接代码，不重新实现、不重新训练。
 - 模型在进程内只加载一次（懒加载 + 线程锁保护）。
 - 显著性字段 `char_range` 由 tokenizer 的 `return_offsets_mapping` 可靠计算，
-  不伪造。中文 RoBERTa-wwm 的 token 粒度是「单字」，因此 words 为 token 级。
+  不伪造。中文 RoBERTa-wwm 的 token 粒度是「单字」，因此 `tokens` 为字级；
+  另用 jieba 分词把字级归因聚合成 `words`（词级），供前端切换「字/词」视图。
 """
 import logging
 import sys
@@ -23,6 +24,65 @@ LABEL_MAP = {0: "negative", 1: "positive"}
 
 # RoBERTa / BERT 的特殊 token id
 _SPECIAL_IDS = {0, 101, 102}  # [PAD], [CLS], [SEP]
+
+# jieba 词级聚合（可选依赖）：未安装时退化为仅字级显著性
+try:
+    import jieba as _jieba
+except Exception:  # noqa: BLE001
+    _jieba = None
+_jieba_warmed = False
+
+
+def aggregate_word_saliency(text: str, tokens: list, mags: list) -> list:
+    """把字级显著性按 jieba 分词聚合成词级。
+
+    RoBERTa-wwm 的 token 粒度是单字，char_range 只能表达「字」。这里用
+    jieba 在原文上分词（返回 [start, end) 字符区间），把落在每个词区间内
+    的字级归因聚合到词：重要性用 L1 幅度求和，方向用带符号和。
+
+    Args:
+        text:   原始文本（已 strip，与 tokenizer 输入一致）
+        tokens: 字级 token 列表，每项含 char_range=[start, end) 与 score_raw
+        mags:   与 tokens 对齐的 L1 幅度（未归一化）
+
+    Returns:
+        词级列表 [{"word", "score_raw", "score", "char_range", "char_count"}]
+        jieba 不可用时返回空列表（前端据此隐藏「词」视图）。
+    """
+    if _jieba is None:
+        return []
+
+    # 字符位置 -> 覆盖它的字级 token 下标（单字 token 居多；多字 token 也兼容）
+    char_to_token = {}
+    for idx, t in enumerate(tokens):
+        s, e = t["char_range"]
+        for c in range(s, e):
+            char_to_token[c] = idx
+
+    words = []
+    for word, start, end in _jieba.tokenize(text):
+        idxs = sorted(
+            {char_to_token[c] for c in range(start, end) if c in char_to_token}
+        )
+        if not idxs:
+            continue
+        raw = sum(tokens[i]["score_raw"] for i in idxs)  # 带符号和（方向）
+        mag = sum(mags[i] for i in idxs)                 # L1 幅度（重要性）
+        words.append(
+            {
+                "word": word,
+                "score_raw": round(raw, 4),
+                "char_range": [start, end],
+                "char_count": len(idxs),
+                "_mag": mag,
+            }
+        )
+
+    max_mag = max((w["_mag"] for w in words), default=0.0)
+    for w in words:
+        w["score"] = round((w["_mag"] / max_mag) if max_mag > 1e-12 else 0.0, 4)
+        w.pop("_mag", None)
+    return words
 
 
 class TextService:
@@ -63,6 +123,7 @@ class TextService:
                 self.wrapper_cls = CaptumFriendlyWrapper
                 self.get_embeddings = get_embeddings_from_ids
                 self.loaded = True
+                self._warm_jieba()
                 logger.info(
                     "text model loaded: %s (%s)", config.TEXT_MODEL_DIR, self.device
                 )
@@ -76,6 +137,19 @@ class TextService:
             self.load()
         if not self.loaded:
             raise RuntimeError(f"text model not loaded: {self.load_error}")
+
+    @staticmethod
+    def _warm_jieba():
+        """预热 jieba 前缀词典（首次分词需构建词典，约数百毫秒）。
+
+        惰性且幂等，未安装 jieba 时静默跳过。放在 load() 里执行，
+        避免把延迟摊到第一次 /api/text 请求上。
+        """
+        global _jieba_warmed
+        if _jieba is None or _jieba_warmed:
+            return
+        _jieba.lcut("预热")
+        _jieba_warmed = True
 
     # ------------------------------------------------------------------
     # 推理 + 归因
@@ -115,8 +189,11 @@ class TextService:
         attr = self._attribute(wrapper, emb, attention_mask, label_id, method)
 
         # 4. 聚合到 token 级
-        attr_sum = attr.squeeze(0).sum(dim=-1)  # (seq_len,)
-        attr_sum = attr_sum.detach().cpu()
+        #    重要性（score）用归因向量的 L1 幅度，而非带符号求和——
+        #    带符号求和会让正负分量抵消，把真正的关键字（如"差"）错误压到接近 0。
+        attr_flat = attr.squeeze(0).detach().cpu()          # (seq_len, hidden)
+        attr_signed = attr_flat.sum(dim=-1)                 # 带符号和 → score_raw（方向）
+        attr_mag = attr_flat.abs().sum(dim=-1)              # L1 幅度 → score（重要性）
 
         real_indices = [
             i
@@ -124,15 +201,17 @@ class TextService:
             if tid not in _SPECIAL_IDS and offsets[i] != [0, 0]
         ]
 
-        magnitudes = torch.abs(attr_sum[[real_indices]])
+        magnitudes = attr_mag[[real_indices]]
         max_mag = float(magnitudes.max()) if magnitudes.numel() else 0.0
 
-        words = []
+        tokens = []
+        mags = []  # 与 tokens 对齐的原始 L1 幅度，供词级聚合
         for pos, i in enumerate(real_indices):
-            signed = float(attr_sum[i].item())
-            mag = abs(signed)
+            signed = float(attr_signed[i].item())
+            mag = float(attr_mag[i].item())
             score = (mag / max_mag) if max_mag > 1e-12 else 0.0
-            words.append(
+            mags.append(mag)
+            tokens.append(
                 {
                     "word": token_texts[i].lstrip("#"),
                     "score": round(score, 4),
@@ -149,7 +228,8 @@ class TextService:
             "label_id": label_id,
             "confidence": round(confidence, 4),
             "method": method,
-            "words": words,
+            "tokens": tokens,                                    # 字级显著性（原 words）
+            "words": aggregate_word_saliency(text, tokens, mags),  # 词级显著性（jieba）
         }
 
     def _attribute(self, wrapper, emb, attention_mask, label_id, method):
