@@ -40,8 +40,8 @@
 ### 3.1 文本情感分析（`POST /api/text`）
 
 - **模型**：中文 RoBERTa-wwm 微调的情感分类器
-- **可解释性**：Captum Integrated Gradients / Saliency，输出**逐字显著性**，前端按字高亮情绪关键点
-- **输出**：情感标签（正向 / 负向）、置信度、每个字（token）的归因分数
+- **可解释性**：Captum Integrated Gradients / Saliency，输出**字级显著性**，另用 jieba 分词聚合成**词级显著性**，前端可切换「字 / 词」视图高亮情绪关键点
+- **输出**：情感标签（正向 / 负向）、置信度、每个字（token）的归因分数、每个词（jieba）的归因分数
 
 ### 3.2 图像视觉显著性（`POST /api/image`）
 
@@ -114,12 +114,12 @@ npm run dev                    # http://localhost:5173
 
 ## 8. 运行依赖与复现状态
 
-| 依赖 | 大小 | 位置 | 状态 |
+| 依赖 | 大小/数据 | 位置 | 状态 |
 |------|------|------|------|
 | `basnet.pth`（BASNet 权重） | 348 MB | `basnet/saved_models/basnet_bsi/` | 未入库，[GoogleDrive](https://drive.google.com/open?id=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu) 下载 |
 | RoBERTa 情感模型 | 391 MB | `SENTIMENT_ROOT` 指定 | **待上传** |
-| 微博原图 | 267 MB | `D:\WeiboCrawler\images\` | 采集项目产出 |
-| `comment_edges.csv` | 1.2 MB | `D:\WeiboCrawler\data\` | 采集项目产出 |
+| 爬虫微博图片源数据 | 500 张 | `D:\WeiboCrawler\images\` | 采集项目产出 |
+| `comment_edges.csv` | 8849 条评论关系 | `D:\WeiboCrawler\data\` | 采集项目产出 |
 
 **当前复现状态**：传播网络 / 核心节点 / 节点详情（文字）开箱即用；文本情感、图片显著性、节点原图需补齐上述依赖。
 
@@ -127,7 +127,7 @@ npm run dev                    # http://localhost:5173
 
 - **核心节点标签是 network-based pseudo-label，不是人工 Ground Truth**，GAT 结果应表述为「GAT-based core propagation node identification」，不声称「预测了真实 KOL」。
 - 评论网络基于每条微博**最多 20 条一级评论**构建，不是完整微博传播网络。
-- 文本显著性为 token（单字）级，未做中文分词（避免引入未经验证的词边界）。
+- 文本显著性提供字级（`tokens`）与词级（`words`）两个视图；词级由 jieba 分词把字级归因求和得到，非模型原生词粒度。
 
 ## 10. 上游模型与署名
 
